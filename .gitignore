@@ -1,0 +1,10 @@
+.idea/
+coverage/
+vendor/
+
+# ignore var-directory but keep its structure
+var/
+!var/**/.gitkeep
+
+.env
+phinx.yml

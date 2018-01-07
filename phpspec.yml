@@ -1,0 +1,18 @@
+suites:
+  main:
+    namespace: Polustrovo
+    psr4_prefix: Polustrovo
+    src_path: src
+
+extensions:
+  Memio\SpecGen\MemioSpecGenExtension: ~
+  LeanPHP\PhpSpec\CodeCoverage\CodeCoverageExtension:
+    format:
+      - html
+    blacklist:
+    - src/Command
+    - src/Exception
+
+formatter.name: dot
+
+bootstrap: ./vendor/autoload.php

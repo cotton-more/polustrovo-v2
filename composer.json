@@ -1,0 +1,56 @@
+{
+    "name": "inikulin/polustrovo-v2",
+    "license": "MIT",
+    "type": "project",
+    "description": "Creating and sending screenshots",
+    "keywords": ["screenshots", "cli"],
+    "authors": [
+        {
+            "name": "Ivan Nikulin",
+            "email": "vansanblch@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.0",
+        "ext-bcmath": "*",
+        "guzzlehttp/guzzle": "^6.3",
+        "ivkos/pushbullet": "^3.3",
+        "mnapoli/silly": "^1.7",
+        "monolog/monolog": "^1.23",
+        "paragonie/easydb": "^2.4",
+        "php-di/php-di": "^5.4",
+        "ramsey/uuid": "^3.7",
+        "symfony/dotenv": "^3.4",
+        "symfony/finder": "^3.4",
+        "symfony/process": "^3.4",
+        "telegram-bot/api": "^2.3",
+        "vansanblch/browshot-api-client": "^0.6"
+    },
+    "require-dev": {
+        "leanphp/phpspec-code-coverage": "^4.0",
+        "memio/spec-gen": "^0.8.3",
+        "phpspec/phpspec": "^4.3",
+        "robmorgan/phinx": "^0.9.1",
+        "symfony/thanks": "^1.0",
+        "symfony/var-dumper": "^3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Polustrovo\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Polustrovo\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "vendor/bin/phpspec run",
+        "post-install-cmd": [
+            "cp -n .env.dist .env"
+        ]
+    }
+}
