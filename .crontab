@@ -1,0 +1,8 @@
+# take screenshot at 12:00 of http://example.com using instance 11
+0 12 * * * bin/console screenshot:take http://example.com 11
+
+# download all finished screenshots every three minutes
+*/3 12 * * * bin/console screenshot:download
+
+# send downloaded screenshots every 7th minute
+*/7 12 * * * bin/console screenshot:send

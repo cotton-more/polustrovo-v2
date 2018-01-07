@@ -9,7 +9,7 @@ use Polustrovo\Repository\ScreenshotPublishRepository;
 
 class PublisherManager
 {
-    const MINIMUM_FILE_SIZE = 20480; // 20 kb
+    const MINIMUM_FILE_SIZE = 90000; // 90 kB
 
     /** @var Publishable[] */
     private $publishers = [];

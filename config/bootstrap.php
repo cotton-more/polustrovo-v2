@@ -28,7 +28,7 @@ $application->command(
 );
 
 $application->command(
-    'screenshot:send [screenshotId]* [--send-all]',
+    'screenshot:send',
     ScreenshotSendCommand::class,
     ['send']
 );
