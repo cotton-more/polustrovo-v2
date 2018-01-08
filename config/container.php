@@ -1,8 +1,8 @@
 <?php
 
-use Polustrovo\Service\Publisher\PublisherManager;
 use Polustrovo\Service\Publisher\PushbulletPublisher;
 use Polustrovo\Service\Publisher\TelegramPublisher;
+use Polustrovo\Service\ScreenshotSendService;
 
 return [
     \ParagonIE\EasyDB\EasyDB::class => \DI\factory(function ($dsn) {
@@ -42,7 +42,7 @@ return [
         ->parameter('apiKey', \DI\env('BROWSHOT_API_KEY'))
     ,
 
-    PublisherManager::class => \DI\create(PublisherManager::class)
+    ScreenshotSendService::class => \DI\create(ScreenshotSendService::class)
         ->constructor(
             \DI\get(\Polustrovo\Repository\ScreenshotPublishRepository::class),
             \DI\value(['pushbullet', 'telegram'])

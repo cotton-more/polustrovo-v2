@@ -12,7 +12,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\TransferException;
 use Polustrovo\Entity\Screenshot;
 use Polustrovo\Repository\ScreenshotRepository;
-use Polustrovo\Service\Publisher\PublisherManager;
+use Polustrovo\Service\ScreenshotSendService;
 use Polustrovo\Service\ScreenshotDownloadService;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -26,7 +26,7 @@ class ScreenshotDownloadServiceSpec extends ObjectBehavior
         ScreenshotRepository $screenshotRepository,
         BrowshotAPI $browshotApi,
         ClientInterface $client,
-        PublisherManager $publisherManager,
+        ScreenshotSendService $screenshotSendService,
         LoggerInterface $logger
     ) {
         putenv('SCREENSHOTS_DIR='.sys_get_temp_dir());
@@ -43,10 +43,10 @@ class ScreenshotDownloadServiceSpec extends ObjectBehavior
         ScreenshotRepository $screenshotRepository,
         BrowshotAPI $browshotClient,
         ClientInterface $client,
-        PublisherManager $publisherManager,
+        ScreenshotSendService $screenshotSendService,
         LoggerInterface $logger
     ) {
-        $this->beConstructedWith($screenshotRepository, $browshotClient, $client, $publisherManager, $logger);
+        $this->beConstructedWith($screenshotRepository, $browshotClient, $client, $screenshotSendService, $logger);
 
         $screenshot = Screenshot::create([
             'screenshotId' => 'uuid-1',
@@ -76,10 +76,10 @@ class ScreenshotDownloadServiceSpec extends ObjectBehavior
         ScreenshotRepository $screenshotRepository,
         BrowshotAPI $browshotClient,
         ClientInterface $client,
-        PublisherManager $publisherManager,
+        ScreenshotSendService $screenshotSendService,
         LoggerInterface $logger
     ) {
-        $this->beConstructedWith($screenshotRepository, $browshotClient, $client, $publisherManager, $logger);
+        $this->beConstructedWith($screenshotRepository, $browshotClient, $client, $screenshotSendService, $logger);
 
         $screenshot = Screenshot::create([
             'screenshotId' => 'uuid-1',
@@ -117,12 +117,12 @@ class ScreenshotDownloadServiceSpec extends ObjectBehavior
         ScreenshotRepository $screenshotRepository,
         BrowshotAPI $browshotClient,
         ClientInterface $client,
-        PublisherManager $publisherManager,
+        ScreenshotSendService $screenshotSendService,
         LoggerInterface $logger,
         ResponseInterface $downloadResult,
         StreamInterface $stream
     ) {
-        $this->beConstructedWith($screenshotRepository, $browshotClient, $client, $publisherManager, $logger);
+        $this->beConstructedWith($screenshotRepository, $browshotClient, $client, $screenshotSendService, $logger);
 
         $screenshot = Screenshot::create([
             'screenshotId' => 'uuid-1',
@@ -164,7 +164,7 @@ class ScreenshotDownloadServiceSpec extends ObjectBehavior
         ;
 
         /** @noinspection PhpParamsInspection */
-        $publisherManager->publish(Argument::type(Screenshot::class))
+        $screenshotSendService->publish(Argument::type(Screenshot::class))
             ->shouldBeCalled()
         ;
 

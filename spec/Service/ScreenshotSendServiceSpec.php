@@ -1,17 +1,17 @@
 <?php
 
-namespace spec\Polustrovo\Service\Publisher;
+namespace spec\Polustrovo\Service;
 
 use Polustrovo\Entity\Screenshot;
 use Polustrovo\Entity\ScreenshotPublish;
 use Polustrovo\Exception\PublisherException;
 use Polustrovo\Repository\ScreenshotPublishRepository;
 use Polustrovo\Service\Publisher\Publishable;
-use Polustrovo\Service\Publisher\PublisherManager;
 use PhpSpec\ObjectBehavior;
+use Polustrovo\Service\ScreenshotSendService;
 use Prophecy\Argument;
 
-class PublisherManagerSpec extends ObjectBehavior
+class ScreenshotSendServiceSpec extends ObjectBehavior
 {
     const ENABLED_PUBLISHERS = ['publisher'];
 
@@ -23,7 +23,7 @@ class PublisherManagerSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(PublisherManager::class);
+        $this->shouldHaveType(ScreenshotSendService::class);
     }
 
     public function it_adds_publisher(Publishable $publishable) {
@@ -76,7 +76,7 @@ class PublisherManagerSpec extends ObjectBehavior
         Publishable $publishable
     ) {
         $screenshot = Screenshot::create([
-            'fileSize' => PublisherManager::MINIMUM_FILE_SIZE - 1,
+            'fileSize' => ScreenshotSendService::MINIMUM_FILE_SIZE - 1,
         ]);
 
         $publishable->getName()->willReturn('publisher');

@@ -1,13 +1,16 @@
 <?php
 
-namespace Polustrovo\Service\Publisher;
+declare(strict_types=1);
+
+namespace Polustrovo\Service;
 
 use Polustrovo\Entity\Screenshot;
 use Polustrovo\Entity\ScreenshotPublish;
 use Polustrovo\Exception\PublisherException;
 use Polustrovo\Repository\ScreenshotPublishRepository;
+use Polustrovo\Service\Publisher\Publishable;
 
-class PublisherManager
+class ScreenshotSendService
 {
     const MINIMUM_FILE_SIZE = 90000; // 90 kB
 

@@ -2,21 +2,21 @@
 
 namespace Polustrovo\Command;
 
-use Polustrovo\Service\Publisher\PublisherManager;
+use Polustrovo\Service\ScreenshotSendService;
 
 class ScreenshotSendCommand
 {
-    /** @var PublisherManager */
-    private $publisherManager;
+    /** @var ScreenshotSendService */
+    private $screenshotSendService;
 
     public function __construct(
-        PublisherManager $publisherManager
+        ScreenshotSendService $screenshotSendService
     ) {
-        $this->publisherManager = $publisherManager;
+        $this->screenshotSendService = $screenshotSendService;
     }
 
     public function __invoke()
     {
-        $this->publisherManager->sendAll();
+        $this->screenshotSendService->sendAll();
     }
 }

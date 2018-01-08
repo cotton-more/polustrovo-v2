@@ -27,8 +27,8 @@ class ScreenshotDownloadService
     /** @var ClientInterface */
     private $client;
 
-    /** @var PublisherManager */
-    private $publisherManager;
+    /** @var ScreenshotSendService */
+    private $screenshotSendService;
 
     /** @var LoggerInterface */
     private $logger;
@@ -38,20 +38,20 @@ class ScreenshotDownloadService
      * @param ScreenshotRepository $screenshotRepository
      * @param BrowshotAPI $browshotClient
      * @param ClientInterface $client
-     * @param PublisherManager $publisherManager
+     * @param ScreenshotSendService $screenshotSendService
      * @param LoggerInterface $logger
      */
     public function __construct(
         ScreenshotRepository $screenshotRepository,
         BrowshotAPI $browshotClient,
         ClientInterface $client,
-        PublisherManager $publisherManager,
+        ScreenshotSendService $screenshotSendService,
         LoggerInterface $logger
     ) {
         $this->screenshotRepository = $screenshotRepository;
         $this->browshotClient = $browshotClient;
         $this->client = $client;
-        $this->publisherManager = $publisherManager;
+        $this->screenshotSendService = $screenshotSendService;
         $this->logger = $logger;
     }
 
@@ -122,7 +122,7 @@ class ScreenshotDownloadService
                 ]);
 
                 $this->screenshotRepository->saveFileAndStatus($screenshot);
-                $this->publisherManager->publish($screenshot);
+                $this->screenshotSendService->publish($screenshot);
             }
         }
     }
