@@ -1,7 +1,5 @@
 <?php
 
-use Polustrovo\Command\ScreenshotDownloadCommand;
-use Polustrovo\Command\ScreenshotSendCommand;
 use Polustrovo\Command\ScreenshotTakeCommand;
 use Symfony\Component\Dotenv\Dotenv;
 
@@ -23,13 +21,17 @@ $application->command(
 
 $application->command(
     'screenshot:download',
-    ScreenshotDownloadCommand::class,
+    function (\Polustrovo\Service\ScreenshotDownloadService $downloadService) {
+        $downloadService->execute();
+    },
     ['download']
 );
 
 $application->command(
     'screenshot:send',
-    ScreenshotSendCommand::class,
+    function (\Polustrovo\Service\ScreenshotSendService $sendService) {
+        $sendService->sendAll();
+    },
     ['send']
 );
 
