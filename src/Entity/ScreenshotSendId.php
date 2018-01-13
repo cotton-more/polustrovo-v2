@@ -6,7 +6,7 @@ namespace Polustrovo\Entity;
 
 use Ramsey\Uuid\Uuid;
 
-final class ScreenshotPublishId
+final class ScreenshotSendId
 {
     /** @var string */
     private $id;

@@ -3,20 +3,21 @@
 namespace spec\Polustrovo\Entity;
 
 use Polustrovo\Entity\ScreenshotId;
-use Polustrovo\Entity\ScreenshotPublish;
+use Polustrovo\Entity\ScreenshotSend;
 use PhpSpec\ObjectBehavior;
-use Polustrovo\Entity\ScreenshotPublishId;
+use Polustrovo\Entity\ScreenshotSendId;
 
-class ScreenshotPublishSpec extends ObjectBehavior
+class ScreenshotSendSpec extends ObjectBehavior
 {
     public function let()
     {
         $this->beConstructedThrough('create', [
             [
-                'screenshotPublishId' => 'uuid-1',
+                'screenshotSendId' => 'uuid-1',
                 'screenshotId' => 'uuid-2',
                 'publisher' => 'some-publisher',
-                'publishedAt' => 'now',
+                'sentAt' => 'now',
+                'errorMessage' => 'error',
                 'createdAt' => '2018-01-02',
             ]
         ]);
@@ -24,13 +25,13 @@ class ScreenshotPublishSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(ScreenshotPublish::class);
+        $this->shouldHaveType(ScreenshotSend::class);
     }
 
     public function it_gets_id()
     {
-        $this->screenshotPublishId()->shouldBeAnInstanceOf(ScreenshotPublishId::class);
-        $this->screenshotPublishId()->id()->shouldBe('uuid-1');
+        $this->screenshotSendId()->shouldBeAnInstanceOf(ScreenshotSendId::class);
+        $this->screenshotSendId()->id()->shouldBe('uuid-1');
     }
 
     public function it_gets_screenshot_id()
@@ -44,9 +45,14 @@ class ScreenshotPublishSpec extends ObjectBehavior
         $this->publisher()->shouldBe('some-publisher');
     }
 
-    public function it_gets_published_at()
+    public function it_gets_sent_at()
     {
-        $this->publishedAt()->shouldBeAnInstanceOf(\DateTimeImmutable::class);
+        $this->sentAt()->shouldBeAnInstanceOf(\DateTimeImmutable::class);
+    }
+
+    public function it_gets_error_message()
+    {
+        $this->errorMessage()->shouldBe('error');
     }
 
     public function it_gets_created_at()

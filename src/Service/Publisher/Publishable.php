@@ -2,7 +2,7 @@
 
 namespace Polustrovo\Service\Publisher;
 
-use Polustrovo\Entity\ScreenshotPublish;
+use Polustrovo\Entity\ScreenshotSend;
 use Polustrovo\Exception\PublisherException;
 
 interface Publishable
@@ -13,8 +13,8 @@ interface Publishable
     public function getName(): string;
 
     /**
-     * @param ScreenshotPublish $screenshotPublish
+     * @param ScreenshotSend $screenshotPublish
      * @throws PublisherException
      */
-    public function send(ScreenshotPublish $screenshotPublish);
+    public function send(ScreenshotSend $screenshotPublish);
 }

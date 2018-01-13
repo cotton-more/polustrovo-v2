@@ -13,11 +13,9 @@ return [
         $logger = new \Monolog\Logger('polustrovo-v2');
 
         $syslogHandler = new \Monolog\Handler\SyslogHandler('polustrovo-v2');
-        $syslogHandler->setFormatter(new \Monolog\Formatter\JsonFormatter);
         $logger->pushHandler($syslogHandler);
 
         $rotatingFileHandler = new \Monolog\Handler\RotatingFileHandler($filename);
-        $rotatingFileHandler->setFormatter(new \Monolog\Formatter\JsonFormatter);
         $logger->pushHandler($rotatingFileHandler);
 
         $streamHandler = new \Monolog\Handler\StreamHandler('php://stdout');
@@ -44,7 +42,7 @@ return [
 
     ScreenshotSendService::class => \DI\create(ScreenshotSendService::class)
         ->constructor(
-            \DI\get(\Polustrovo\Repository\ScreenshotPublishRepository::class),
+            \DI\get(\Polustrovo\Repository\ScreenshotSendRepository::class),
             \DI\value(['pushbullet', 'telegram'])
         )
         ->method('addPublisher', \DI\get(TelegramPublisher::class))

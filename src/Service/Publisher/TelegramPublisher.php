@@ -2,7 +2,7 @@
 
 namespace Polustrovo\Service\Publisher;
 
-use Polustrovo\Entity\ScreenshotPublish;
+use Polustrovo\Entity\ScreenshotSend;
 use Polustrovo\Exception\PublisherException;
 use Polustrovo\Repository\ScreenshotRepository;
 use Psr\Log\LoggerInterface;
@@ -40,10 +40,10 @@ class TelegramPublisher implements Publishable
     }
 
     /**
-     * @param ScreenshotPublish $screenshotPublish
+     * @param ScreenshotSend $screenshotPublish
      * @throws PublisherException
      */
-    public function send(ScreenshotPublish $screenshotPublish)
+    public function send(ScreenshotSend $screenshotPublish)
     {
         $screenshot = $this->screenshotRepository->getById($screenshotPublish->screenshotId());
 

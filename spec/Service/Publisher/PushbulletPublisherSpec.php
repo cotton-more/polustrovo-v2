@@ -3,7 +3,7 @@
 namespace spec\Polustrovo\Service\Publisher;
 
 use Polustrovo\Entity\Screenshot;
-use Polustrovo\Entity\ScreenshotPublish;
+use Polustrovo\Entity\ScreenshotSend;
 use Polustrovo\Exception\PublisherException;
 use Polustrovo\Repository\ScreenshotRepository;
 use Polustrovo\Service\Publisher\PushbulletPublisher;
@@ -48,7 +48,7 @@ class PushbulletPublisherSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith($logger, $screenshotRepository, $pushbullet);
 
-        $screenshotPublish = ScreenshotPublish::create([
+        $screenshotPublish = ScreenshotSend::create([
             'screenshotId' => 'uuid',
         ]);
 
@@ -79,7 +79,7 @@ class PushbulletPublisherSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith($logger, $screenshotRepository, $pushbullet);
 
-        $screenshotPublish = ScreenshotPublish::create([
+        $screenshotPublish = ScreenshotSend::create([
             'screenshotId' => 'uuid',
         ]);
 

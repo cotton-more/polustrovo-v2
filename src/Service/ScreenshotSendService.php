@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Polustrovo\Service;
 
 use Polustrovo\Entity\Screenshot;
-use Polustrovo\Entity\ScreenshotPublish;
+use Polustrovo\Entity\ScreenshotSend;
 use Polustrovo\Exception\PublisherException;
-use Polustrovo\Repository\ScreenshotPublishRepository;
+use Polustrovo\Repository\ScreenshotSendRepository;
 use Polustrovo\Service\Publisher\Publishable;
 
 class ScreenshotSendService
@@ -17,17 +17,17 @@ class ScreenshotSendService
     /** @var Publishable[] */
     private $publishers = [];
 
-    /** @var ScreenshotPublishRepository */
-    private $screenshotPublishRepository;
+    /** @var ScreenshotSendRepository */
+    private $screenshotSendRepository;
 
     /** @var array */
     private $enabledPublishers;
 
     public function __construct(
-        ScreenshotPublishRepository $screenshotPublishRepository,
+        ScreenshotSendRepository $screenshotSendRepository,
         array $enabledPublishers = []
     ) {
-        $this->screenshotPublishRepository = $screenshotPublishRepository;
+        $this->screenshotSendRepository = $screenshotSendRepository;
         $this->enabledPublishers = $enabledPublishers;
     }
 
@@ -57,55 +57,53 @@ class ScreenshotSendService
         }
 
         foreach ($this->publishers() as $publisher) {
-            $this->screenshotPublishRepository->addToPublish($screenshot, $publisher->getName());
+            $this->screenshotSendRepository->addToSend($screenshot, $publisher->getName());
         }
     }
 
     public function sendAll()
     {
-        $screenshotPublishList = $this->screenshotPublishRepository->getUnpublished();
-
-        foreach ($screenshotPublishList as $screenshotPublish) {
-            $this->send($screenshotPublish);
+        foreach ($this->screenshotSendRepository->getUnsent() as $screenshotSendEntity) {
+            $this->send($screenshotSendEntity);
         }
     }
 
     /**
-     * @param ScreenshotPublish $screenshotPublish
+     * @param ScreenshotSend $screenshotSendEntity
      * @param Publishable $publishable
      * @return bool
      */
-    public function canSendWithPublisher(ScreenshotPublish $screenshotPublish, Publishable $publishable)
+    public function canSendWithPublisher(ScreenshotSend $screenshotSendEntity, Publishable $publishable)
     {
-        if ($screenshotPublish->publisher() === $publishable->getName()) {
+        if ($screenshotSendEntity->publisher() === $publishable->getName()) {
             return true;
         }
 
         return false;
     }
 
-    private function send(ScreenshotPublish $screenshotPublish)
+    private function send(ScreenshotSend $screenshotSendEntity)
     {
         foreach ($this->publishers() as $publisher) {
-            if (!$this->canSendWithPublisher($screenshotPublish, $publisher)) {
+            if (!$this->canSendWithPublisher($screenshotSendEntity, $publisher)) {
                 continue;
             }
 
             try {
-                $publisher->send($screenshotPublish);
+                $publisher->send($screenshotSendEntity);
             } catch (PublisherException $exception) {
                 $message = $exception->getPublisherName().': '.$exception->getMessage();
 
-                $screenshotPublish = $screenshotPublish->with([
+                $screenshotSendEntity = $screenshotSendEntity->with([
                     'errorMessage' => $message,
                 ]);
             }
 
-            $screenshotPublish = $screenshotPublish->with([
-                'publishedAt' => 'now',
+            $screenshotSendEntity = $screenshotSendEntity->with([
+                'sentAt' => 'now',
             ]);
 
-            $this->screenshotPublishRepository->setAsPublished($screenshotPublish);
+            $this->screenshotSendRepository->setAsSent($screenshotSendEntity);
         }
     }
 }

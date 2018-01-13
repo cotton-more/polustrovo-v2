@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Polustrovo\Entity;
 
-final class ScreenshotPublish
+final class ScreenshotSend
 {
     use Entity;
 
     const IDS = [
-        'screenshotPublishId' => ScreenshotPublishId::class,
+        'screenshotSendId' => ScreenshotSendId::class,
         'screenshotId' => ScreenshotId::class,
     ];
 
-    const DATES = ['createdAt', 'publishedAt'];
+    const DATES = ['sentAt', 'createdAt'];
 
-    /** @var ScreenshotPublishId */
-    protected $screenshotPublishId;
+    /** @var ScreenshotSendId */
+    protected $screenshotSendId;
 
     /** @var ScreenshotId */
     protected $screenshotId;
@@ -25,7 +25,7 @@ final class ScreenshotPublish
     protected $publisher;
 
     /** @var \DateTimeImmutable */
-    protected $publishedAt;
+    protected $sentAt;
 
     /** @var string */
     protected $errorMessage = '';
@@ -34,11 +34,11 @@ final class ScreenshotPublish
     protected $createdAt;
 
     /**
-     * @return ScreenshotPublishId
+     * @return ScreenshotSendId
      */
-    public function screenshotPublishId(): ScreenshotPublishId
+    public function screenshotSendId(): ScreenshotSendId
     {
-        return $this->screenshotPublishId;
+        return $this->screenshotSendId;
     }
 
     /**
@@ -60,9 +60,9 @@ final class ScreenshotPublish
     /**
      * @return \DateTimeImmutable
      */
-    public function publishedAt(): \DateTimeImmutable
+    public function sentAt(): \DateTimeImmutable
     {
-        return $this->publishedAt;
+        return $this->sentAt;
     }
 
     /**

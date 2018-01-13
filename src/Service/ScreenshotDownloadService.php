@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Polustrovo\Service;
 
 use BrowshotAPI\BrowshotAPI;
@@ -13,7 +15,6 @@ use GuzzleHttp\RequestOptions;
 use Polustrovo\Exception\ScreenshotDownloadException;
 use Polustrovo\Entity\Screenshot;
 use Polustrovo\Repository\ScreenshotRepository;
-use Polustrovo\Service\Publisher\PublisherManager;
 use Psr\Log\LoggerInterface;
 
 class ScreenshotDownloadService
@@ -150,7 +151,9 @@ class ScreenshotDownloadService
             /** @noinspection PhpUndefinedMethodInspection */
             $message = 'Failed to download.';
 
-            $this->logger->warning($message.' '.$e->getMessage());
+            $this->logger->warning($message.' '.$e->getMessage(), [
+                'responseCode' => $e->getCode(),
+            ]);
 
             throw new ScreenshotDownloadException($message, ScreenshotDownloadException::DOWNLOAD_FAILED, $e);
         }

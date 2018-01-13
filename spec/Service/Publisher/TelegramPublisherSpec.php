@@ -3,7 +3,7 @@
 namespace spec\Polustrovo\Service\Publisher;
 
 use Polustrovo\Entity\Screenshot;
-use Polustrovo\Entity\ScreenshotPublish;
+use Polustrovo\Entity\ScreenshotSend;
 use Polustrovo\Exception\PublisherException;
 use Polustrovo\Repository\ScreenshotRepository;
 use Polustrovo\Service\Publisher\TelegramPublisher;
@@ -43,7 +43,7 @@ class TelegramPublisherSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith($logger, $screenshotRepository, $telegramBotApi);
 
-        $screenshotPublish = ScreenshotPublish::create([
+        $screenshotPublish = ScreenshotSend::create([
             'screenshotId' => 'uuid',
         ]);
 
@@ -71,7 +71,7 @@ class TelegramPublisherSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith($logger, $screenshotRepository, $telegramBotApi);
 
-        $screenshotPublish = ScreenshotPublish::create([
+        $screenshotPublish = ScreenshotSend::create([
             'screenshotId' => 'uuid',
         ]);
 

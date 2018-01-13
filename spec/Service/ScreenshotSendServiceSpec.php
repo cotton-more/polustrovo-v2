@@ -3,9 +3,9 @@
 namespace spec\Polustrovo\Service;
 
 use Polustrovo\Entity\Screenshot;
-use Polustrovo\Entity\ScreenshotPublish;
+use Polustrovo\Entity\ScreenshotSend;
 use Polustrovo\Exception\PublisherException;
-use Polustrovo\Repository\ScreenshotPublishRepository;
+use Polustrovo\Repository\ScreenshotSendRepository;
 use Polustrovo\Service\Publisher\Publishable;
 use PhpSpec\ObjectBehavior;
 use Polustrovo\Service\ScreenshotSendService;
@@ -16,9 +16,9 @@ class ScreenshotSendServiceSpec extends ObjectBehavior
     const ENABLED_PUBLISHERS = ['publisher'];
 
     public function let(
-        ScreenshotPublishRepository $screenshotPublishRepository
+        ScreenshotSendRepository $screenshotSendRepository
     ) {
-        $this->beConstructedWith($screenshotPublishRepository, self::ENABLED_PUBLISHERS);
+        $this->beConstructedWith($screenshotSendRepository, self::ENABLED_PUBLISHERS);
     }
 
     public function it_is_initializable()
@@ -38,23 +38,23 @@ class ScreenshotSendServiceSpec extends ObjectBehavior
 
     public function it_checks_if_could_be_send_with_a_publisher(Publishable $publishable)
     {
-        $screenshotPublish = (new ScreenshotPublish())->with([
+        $screenshotSendEntity = ScreenshotSend::create([
             'publisher' => 'publisher',
         ]);
 
         $publishable->getName()->shouldBeCalled()->willReturn('publisher');
 
-        $this->canSendWithPublisher($screenshotPublish, $publishable)->shouldBe(true);
+        $this->canSendWithPublisher($screenshotSendEntity, $publishable)->shouldBe(true);
 
-        $screenshotPublish = (new ScreenshotPublish())->with([
+        $screenshotSendEntity = ScreenshotSend::create([
             'publisher' => 'other-publisher',
         ]);
 
-        $this->canSendWithPublisher($screenshotPublish, $publishable)->shouldBe(false);
+        $this->canSendWithPublisher($screenshotSendEntity, $publishable)->shouldBe(false);
     }
 
     public function it_adds_screenshot_to_publish_if_size_is_more_than_minimum(
-        ScreenshotPublishRepository $screenshotPublishRepository,
+        ScreenshotSendRepository $screenshotSendRepository,
         Publishable $publishable
     ) {
         $screenshot = Screenshot::create([
@@ -64,7 +64,7 @@ class ScreenshotSendServiceSpec extends ObjectBehavior
         $publishable->getName()->willReturn('publisher');
         $this->addPublisher($publishable);
 
-        $screenshotPublishRepository->addToPublish($screenshot, 'publisher')
+        $screenshotSendRepository->addToSend($screenshot, 'publisher')
             ->shouldBeCalled()
         ;
 
@@ -72,7 +72,7 @@ class ScreenshotSendServiceSpec extends ObjectBehavior
     }
 
     public function it_does_not_publish_screenshot_with_file_size_less_than_minimum(
-        ScreenshotPublishRepository $screenshotPublishRepository,
+        ScreenshotSendRepository $screenshotSendRepository,
         Publishable $publishable
     ) {
         $screenshot = Screenshot::create([
@@ -82,7 +82,7 @@ class ScreenshotSendServiceSpec extends ObjectBehavior
         $publishable->getName()->willReturn('publisher');
         $this->addPublisher($publishable);
 
-        $screenshotPublishRepository->addToPublish($screenshot, 'publisher')
+        $screenshotSendRepository->addToSend($screenshot, 'publisher')
             ->shouldNotBeCalled()
         ;
 
@@ -92,9 +92,9 @@ class ScreenshotSendServiceSpec extends ObjectBehavior
     public function it_sends_unpublished_screenshots_with_its_publisher_and_handle_publisher_exception(
         Publishable $fooPublisher,
         Publishable $barPublisher,
-        ScreenshotPublishRepository $screenshotPublishRepository
+        ScreenshotSendRepository $screenshotSendRepository
     ) {
-        $this->beConstructedWith($screenshotPublishRepository, ['foo', 'bar']);
+        $this->beConstructedWith($screenshotSendRepository, ['foo', 'bar']);
 
         $fooPublisher->getName()->willReturn('foo');
 
@@ -114,20 +114,20 @@ class ScreenshotSendServiceSpec extends ObjectBehavior
 
         $this->addPublisher($barPublisher);
 
-        $screenshotPublishRepository->getUnpublished()->willReturn([
-            ScreenshotPublish::create(['publisher' => 'foo']),
-            ScreenshotPublish::create(['publisher' => 'bar']),
+        $screenshotSendRepository->getUnsent()->willReturn([
+            ScreenshotSend::create(['publisher' => 'foo']),
+            ScreenshotSend::create(['publisher' => 'bar']),
         ]);
 
         /** @noinspection PhpParamsInspection */
-        $screenshotPublishRepository->setAsPublished(
+        $screenshotSendRepository->setAsSent(
             Argument::allOf(
                 Argument::which('publisher', 'foo')
             )
         )->shouldBeCalled();
 
         /** @noinspection PhpParamsInspection */
-        $screenshotPublishRepository->setAsPublished(
+        $screenshotSendRepository->setAsSent(
             Argument::allOf(
                 Argument::which('publisher', 'bar'),
                 Argument::which('errorMessage', 'bar: some error')
