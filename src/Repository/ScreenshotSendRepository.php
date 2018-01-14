@@ -41,6 +41,7 @@ class ScreenshotSendRepository
             'screenshot_id' => $screenshot->screenshotId()->id(),
             'publisher' => $publisher,
             'sent_at' => null,
+            'error_message' => '',
         ]);
 
         return $result ? $id : false;
@@ -60,8 +61,7 @@ class ScreenshotSendRepository
                 'screenshotSendId' => $row['screenshot_send_id'],
                 'screenshotId' => $row['screenshot_id'],
                 'publisher' => $row['publisher'],
-                'sentAt' => null,
-                'errorMessage' => $row['error_message'],
+                'errorMessage' => (string) $row['error_message'],
                 'createdAt' => $row['created_at'],
             ]);
         }, $rows);
@@ -79,7 +79,7 @@ class ScreenshotSendRepository
 
         $result = $this->easyDB->update($this->tableName, [
             'sent_at' => $sentAt->format('Y-m-d H:i:s'),
-            'error_message' => $screenshotSend->errorMessage() ?: '',
+            'error_message' => $screenshotSend->errorMessage(),
         ], [
             'screenshot_send_id' => $screenshotSend->screenshotSendId()->id(),
         ]);

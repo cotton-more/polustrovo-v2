@@ -43,7 +43,10 @@ return [
     ScreenshotSendService::class => \DI\create(ScreenshotSendService::class)
         ->constructor(
             \DI\get(\Polustrovo\Repository\ScreenshotSendRepository::class),
-            \DI\value(['pushbullet', 'telegram'])
+            \DI\value([
+                'pushbullet',
+                'telegram',
+            ])
         )
         ->method('addPublisher', \DI\get(TelegramPublisher::class))
         ->method('addPublisher', \DI\get(PushbulletPublisher::class))
