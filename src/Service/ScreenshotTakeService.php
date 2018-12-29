@@ -56,7 +56,7 @@ class ScreenshotTakeService
     private function getScreenshotEntity(ScreenshotResponse $response, ScreenshotCreateRequest $request)
     {
         $screenshot = (new Screenshot())->with([
-            'browshotId' => $response->getId(),
+            'browshotId' => $response->getId() ?? 0,
             'status' => $response->getStatus(),
             'errorMessage' => $response->getError(),
             'url' => $request->getUrl(),

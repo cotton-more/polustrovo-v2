@@ -45,6 +45,7 @@
         }
     },
     "config": {
+        "classmap-authoritative": true,
         "sort-packages": true
     },
     "scripts": {

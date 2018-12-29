@@ -69,9 +69,15 @@ class ScreenshotSendRepository
         return $result;
     }
 
+    /**
+     * @param ScreenshotSend $screenshotSend
+     * @return int
+     * @throws \InvalidArgumentException
+     * @throws \ParagonIE\EasyDB\Exception\QueryError
+     */
     public function setAsSent(ScreenshotSend $screenshotSend)
     {
-        if (!in_array('sentAt', $screenshotSend->changes())) {
+        if (!\in_array('sentAt', $screenshotSend->changes(), true)) {
             throw new \InvalidArgumentException('A sentAt property has to be changed');
         }
 

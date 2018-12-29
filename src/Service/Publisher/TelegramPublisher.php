@@ -55,9 +55,12 @@ class TelegramPublisher implements Publishable
             $message = $this->telegramBotApi->sendPhoto(getenv('TELEGRAM_CHAT_ID'), $photo, $caption);
 
             $this->logger->debug('Photo emitted', $message->toJson(true));
-        } catch (InvalidArgumentException $e) {
-            throw new PublisherException($e->getMessage(), $e->getCode(), $this, $e);
-        } catch (Exception $e) {
+        } catch (InvalidArgumentException | Exception $e) {
+            $this->logger->warning('Telegram exception', [
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+            ]);
+
             throw new PublisherException($e->getMessage(), $e->getCode(), $this, $e);
         }
     }

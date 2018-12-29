@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Polustrovo\Service;
 
+use ParagonIE\EasyDB\Exception\QueryError;
 use Polustrovo\Entity\Screenshot;
 use Polustrovo\Entity\ScreenshotSend;
 use Polustrovo\Exception\PublisherException;
@@ -91,19 +92,21 @@ class ScreenshotSendService
 
             try {
                 $publisher->send($screenshotSendEntity);
+
+                $screenshotSendEntity = $screenshotSendEntity->with([
+                    'sentAt' => 'now',
+                ]);
+
+                $this->screenshotSendRepository->setAsSent($screenshotSendEntity);
             } catch (PublisherException $exception) {
                 $message = $exception->getPublisherName().': '.$exception->getMessage();
 
                 $screenshotSendEntity = $screenshotSendEntity->with([
                     'errorMessage' => $message,
                 ]);
+            } catch (\InvalidArgumentException $e) {
+            } catch (QueryError $e) {
             }
-
-            $screenshotSendEntity = $screenshotSendEntity->with([
-                'sentAt' => 'now',
-            ]);
-
-            $this->screenshotSendRepository->setAsSent($screenshotSendEntity);
         }
     }
 }
